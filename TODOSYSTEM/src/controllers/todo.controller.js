@@ -1,9 +1,9 @@
 const Todo = require('../models/Todo.model')
 const express = require('express')
-
+const authenticate = require('../middleware/authenticate')
 const router = express.Router()
 
-router.get("/",async function (req, res) {
+router.get("/",authenticate,async function (req, res) {
       try{
           let todo = await Todo.find()
           return res.send(todo)
@@ -13,7 +13,7 @@ router.get("/",async function (req, res) {
       }
 })
 
-router.post("/",async function (req, res) {
+router.post("/",authenticate,async function (req, res) {
       try{
           let todo = await Todo.create(req.body)
           return res.send(todo)
@@ -23,7 +23,7 @@ router.post("/",async function (req, res) {
       }
 })
 
-router.patch("/:id",async function (req, res) {
+router.patch("/:id",authenticate,async function (req, res) {
       try{
           let todo = await Todo.findById()
           return res.send(todo)
@@ -34,7 +34,7 @@ router.patch("/:id",async function (req, res) {
 })
 
 
-router.delete("/:id",async function (req, res) {
+router.delete("/:id",authenticate,async function (req, res) {
       try{
           let todo = await Todo.findByIdAndDelete().lean().exec()
           return res.send(todo)
